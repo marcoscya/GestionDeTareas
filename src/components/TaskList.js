@@ -114,6 +114,14 @@ const TaskList = ({ tasks, toggleComplete, deleteTask }) => {
                             variant="outlined"
                           />
                         )}
+                        {task.category && (
+                          <Chip
+                            label={`Categoría: ${task.category}`}
+                            size="small"
+                            color="primary"
+                            variant="outlined"
+                          />
+                        )}
                       </div>
                     </>
                   }

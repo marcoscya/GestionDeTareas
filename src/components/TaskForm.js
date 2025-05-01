@@ -10,12 +10,13 @@ import {
   MenuItem,
 } from "@mui/material";
 
-const TaskForm = ({ addTask }) => {
+const TaskForm = ({ addTask, categories }) => {
   const [task, setTask] = useState({
     title: "",
     description: "",
     priority: "media",
     dueDate: "",
+    category: categories[0] || "",
   });
 
   const handleChange = (e) => {
@@ -27,7 +28,13 @@ const TaskForm = ({ addTask }) => {
     e.preventDefault();
     if (!task.title.trim()) return;
     addTask(task);
-    setTask({ title: "", description: "", priority: "media", dueDate: "" });
+    setTask({
+      title: "",
+      description: "",
+      priority: "media",
+      dueDate: "",
+      category: categories[0] || "",
+    });
   };
 
   return (
@@ -84,6 +91,23 @@ const TaskForm = ({ addTask }) => {
             }}
             variant="outlined"
           />
+        </Grid>
+        <Grid item xs={12}>
+          <FormControl fullWidth variant="outlined">
+            <InputLabel>Categoría</InputLabel>
+            <Select
+              name="category"
+              value={task.category}
+              onChange={handleChange}
+              label="Categoría"
+            >
+              {categories.map((category) => (
+                <MenuItem key={category} value={category}>
+                  {category}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
         </Grid>
         <Grid item xs={12}>
           <Button
