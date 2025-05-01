@@ -11,7 +11,10 @@ import {
   Tab,
   TextField,
   InputAdornment,
-  Divider,
+  AppBar,
+  Toolbar,
+  Grid,
+  Button,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import TaskForm from "./components/TaskForm";
@@ -23,10 +26,30 @@ import AuthComponent from "./components/AuthComponent";
 const theme = createTheme({
   palette: {
     primary: {
-      main: "#1976d2",
+      main: "#3f51b5", // Azul similar al de tu mockup
     },
     secondary: {
       main: "#dc004e",
+    },
+    background: {
+      default: "#f5f5f5",
+    },
+  },
+  components: {
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          borderRadius: 4,
+        },
+      },
+    },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          borderRadius: 4,
+          textTransform: "none",
+        },
+      },
     },
   },
 });
@@ -46,6 +69,14 @@ function App() {
   ]);
   // Estado para el usuario autenticado
   const [user, setUser] = useState(null);
+  // Estado para el formulario de tarea
+  const [newTask, setNewTask] = useState({
+    title: "",
+    description: "",
+    dueDate: "",
+    priority: "media",
+    category: categories[0] || "",
+  });
 
   // Cargar tareas desde localStorage al iniciar
   useEffect(() => {
@@ -82,9 +113,24 @@ function App() {
     }
   }, [user]);
 
+  // Manejar cambios en el formulario
+  const handleTaskChange = (e) => {
+    const { name, value } = e.target;
+    setNewTask({ ...newTask, [name]: value });
+  };
+
   // Función para añadir una nueva tarea
-  const addTask = (task) => {
-    setTasks([...tasks, { ...task, id: Date.now(), completed: false }]);
+  const addTask = () => {
+    if (!newTask.title.trim()) return;
+
+    setTasks([...tasks, { ...newTask, id: Date.now(), completed: false }]);
+    setNewTask({
+      title: "",
+      description: "",
+      dueDate: "",
+      priority: "media",
+      category: categories[0] || "",
+    });
   };
 
   // Función para marcar una tarea como completada
@@ -146,76 +192,401 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Container maxWidth="md">
-        <Box my={4}>
-          <Typography variant="h3" component="h1" gutterBottom align="center">
-            Gestor de Tareas
-          </Typography>
 
-          {!user ? (
+      {user && (
+        <AppBar position="static" color="primary" elevation={0}>
+          <Toolbar>
+            <Typography
+              variant="h5"
+              component="div"
+              sx={{ flexGrow: 1, fontWeight: "bold" }}
+            >
+              GESTOR DE TAREAS
+            </Typography>
+            <Box display="flex" alignItems="center">
+              <Typography variant="h5" sx={{ mr: 2 }}>
+                Bienvenido, {user.name}
+              </Typography>
+              <Button
+                color="inherit"
+                onClick={logout}
+                sx={{
+                  textDecoration: "underline",
+                  fontWeight: "medium",
+                }}
+              >
+                Cerrar sesión
+              </Button>
+            </Box>
+          </Toolbar>
+        </AppBar>
+      )}
+      {/*lg*/}
+      <Container
+        maxWidth="90%"
+        sx={{
+          mt: user ? 4 : 2,
+          mb: 4,
+          ml: "auto", //Margen izquierdo automático
+          pl: { xs: 2, sm: 4, md: 8, lg: 25 }, // Margen derecho fijo
+        }}
+      >
+        {!user ? (
+          <>
+            <Typography
+              variant="h3"
+              component="h1"
+              gutterBottom
+              align="center"
+              sx={{ mb: 4 }}
+            >
+              GESTOR DE TAREAS
+            </Typography>
             <AuthComponent login={login} />
-          ) : (
-            <>
-              <Box display="flex" justifyContent="flex-end" mb={2}>
-                <Typography variant="subtitle1" mr={2}>
-                  Bienvenido, {user.name}
-                </Typography>
-                <Typography
-                  variant="subtitle1"
-                  color="primary"
-                  sx={{ cursor: "pointer" }}
-                  onClick={logout}
-                >
-                  Cerrar sesión
-                </Typography>
-              </Box>
-
-              <Paper sx={{ mb: 3, p: 2 }}>
-                <TextField
-                  fullWidth
-                  variant="outlined"
-                  placeholder="Buscar tareas..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <SearchIcon />
-                      </InputAdornment>
-                    ),
+          </>
+        ) : (
+          <>
+            <Grid container spacing={4} sx={{ mb: 1 /* Reducir cajas*/ }}>
+              {/* CAJA 1: Lado derecho - Formulario de tareas */}
+              <Grid item xs={12} md={7}>
+                <Paper
+                  elevation={8}
+                  sx={{
+                    p: 5,
+                    borderRadius: 2,
+                    height: "95%",
+                    width: "100%",
+                    minWidth: "800px",
+                    minHeight: "600px",
                   }}
-                  sx={{ mb: 2 }}
-                />
-
-                <Tabs
-                  value={filter}
-                  onChange={(e, newValue) => setFilter(newValue)}
-                  indicatorColor="primary"
-                  textColor="primary"
-                  variant="fullWidth"
                 >
-                  <Tab label="Todas" value="all" />
-                  <Tab label="Activas" value="active" />
-                  <Tab label="Completadas" value="completed" />
-                </Tabs>
-              </Paper>
+                  <Typography
+                    variant="h5"
+                    gutterBottom
+                    sx={{ fontWeight: "bold", mb: 3 }}
+                  >
+                    NUEVA TAREA
+                  </Typography>
 
-              <CategoryManager
-                categories={categories}
-                addCategory={addCategory}
-                deleteCategory={deleteCategory}
-              />
+                  <TextField
+                    fullWidth
+                    label="Título de la tarea"
+                    name="title"
+                    value={newTask.title}
+                    onChange={handleTaskChange}
+                    variant="outlined"
+                    sx={{
+                      mb: 3,
+                      borderRadius: 1,
+                      "& .MuiOutlinedInput-input": {
+                        fontSize: "1.1rem", // Increase font size of the text
+                      },
+                    }}
+                  />
 
-              <TaskForm addTask={addTask} categories={categories} />
+                  <TextField
+                    fullWidth
+                    label="Fecha límite"
+                    name="dueDate"
+                    type="date"
+                    value={newTask.dueDate}
+                    onChange={handleTaskChange}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    variant="outlined"
+                    sx={{
+                      mb: 3,
+                      borderRadius: 1,
+                      "& .MuiOutlinedInput-input": {
+                        fontSize: "1.1rem", // Increase font size of the text
+                      },
+                    }}
+                  />
+
+                  <TextField
+                    fullWidth
+                    label="Descripción"
+                    name="description"
+                    value={newTask.description}
+                    onChange={handleTaskChange}
+                    multiline
+                    rows={5}
+                    variant="outlined"
+                    sx={{
+                      mb: 3,
+                      borderRadius: 1,
+                      "& .MuiOutlinedInput-input": {
+                        fontSize: "1.2rem", // Aumentar tamaño de fuente del texto
+                      },
+                    }}
+                  />
+
+                  <Grid container spacing={3} sx={{ mb: 3 }}>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        fullWidth
+                        select
+                        label="Prioridad"
+                        name="priority"
+                        value={newTask.priority}
+                        onChange={handleTaskChange}
+                        variant="outlined"
+                        SelectProps={{
+                          native: true,
+                          MenuProps: {
+                            anchorOrigin: {
+                              vertical: "bottom",
+                              horizontal: "left",
+                            },
+                            transformOrigin: {
+                              vertical: "top",
+                              horizontal: "left",
+                            },
+                            // Esto evita que el menú se superponga con otros elementos
+                            getContentAnchorEl: null,
+                            // Esto limita la altura del menú desplegable
+                            PaperProps: {
+                              style: {
+                                maxHeight: 200,
+                              },
+                            },
+                          },
+                        }}
+                        sx={{
+                          "& .MuiInputBase-input": {
+                            fontSize: "1.1rem", // Aumentar tamaño de fuente del texto seleccionado
+                          },
+                          "& .MuiInputLabel-root": {
+                            fontSize: "1.1rem", // Aumentar tamaño de fuente de la etiqueta
+                          },
+                        }}
+                      >
+                        <option value="baja">Baja</option>
+                        <option value="media">Media</option>
+                        <option value="alta">Alta</option>
+                      </TextField>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        fullWidth
+                        select
+                        label="Categoría"
+                        name="category"
+                        value={newTask.category}
+                        onChange={handleTaskChange}
+                        variant="outlined"
+                        SelectProps={{
+                          native: true,
+                          MenuProps: {
+                            anchorOrigin: {
+                              vertical: "bottom",
+                              horizontal: "left",
+                            },
+                            transformOrigin: {
+                              vertical: "top",
+                              horizontal: "left",
+                            },
+                            // Esto evita que el menú se superponga con otros elementos
+                            getContentAnchorEl: null,
+                            // Esto limita la altura del menú desplegable
+                            PaperProps: {
+                              style: {
+                                maxHeight: 200,
+                              },
+                            },
+                          },
+                        }}
+                        sx={{
+                          "& .MuiInputBase-input": {
+                            fontSize: "1.1rem", // Aumentar tamaño de fuente del texto seleccionado
+                          },
+                          "& .MuiInputLabel-root": {
+                            fontSize: "1.1rem", // Aumentar tamaño de fuente de la etiqueta
+                          },
+                        }}
+                      >
+                        {categories.map((category) => (
+                          <option key={category} value={category}>
+                            {category}
+                          </option>
+                        ))}
+                      </TextField>
+                    </Grid>
+                  </Grid>
+
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={addTask}
+                    size="large"
+                    sx={{
+                      py: 1.5,
+                      px: 5,
+                      fontSize: "1.1rem",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    AÑADIR TAREA
+                  </Button>
+                </Paper>
+              </Grid>
+
+              {/* CAJA 2: Lado izquierdo - Búsqueda, filtros y categorías */}
+              <Grid item xs={12} md={5}>
+                <Paper
+                  elevation={8}
+                  sx={{
+                    p: 5,
+                    borderRadius: 2,
+                    height: "95%",
+                    width: "100%",
+                    minHeight: "600px",
+                    minWidth: "800px",
+                  }}
+                >
+                  <Typography
+                    variant="h5"
+                    gutterBottom
+                    sx={{
+                      fontWeight: "bold",
+                      mb: 3,
+                    }}
+                  >
+                    BUSCAR Y FILTRAR
+                  </Typography>
+
+                  <TextField
+                    fullWidth
+                    variant="outlined"
+                    placeholder="BUSCAR TAREA"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <SearchIcon />
+                        </InputAdornment>
+                      ),
+                    }}
+                    sx={{
+                      mb: 4,
+                      borderRadius: 1,
+                      "& .MuiInputBase-input": {
+                        fontSize: "1.1rem",
+                      },
+                    }}
+                  />
+
+                  <Typography
+                    variant="h6"
+                    gutterBottom
+                    sx={{ fontWeight: "bold", mb: 2 }}
+                  >
+                    FILTROS
+                  </Typography>
+
+                  <Box
+                    sx={{ mb: 4, p: 2, bgcolor: "#f5f5f5", borderRadius: 2 }}
+                  >
+                    <Button
+                      fullWidth
+                      variant={filter === "all" ? "contained" : "outlined"}
+                      onClick={() => setFilter("all")}
+                      sx={{
+                        mb: 2,
+                        py: 1.5,
+                        fontWeight: "bold",
+                        fontSize: "1rem",
+                      }}
+                    >
+                      TODAS
+                    </Button>
+                    <Button
+                      fullWidth
+                      variant={filter === "active" ? "contained" : "outlined"}
+                      onClick={() => setFilter("active")}
+                      sx={{
+                        mb: 2,
+                        py: 1.5,
+                        fontWeight: "bold",
+                        fontSize: "1rem",
+                      }}
+                    >
+                      ACTIVAS
+                    </Button>
+                    <Button
+                      fullWidth
+                      variant={
+                        filter === "completed" ? "contained" : "outlined"
+                      }
+                      onClick={() => setFilter("completed")}
+                      sx={{
+                        py: 1.5,
+                        fontWeight: "bold",
+                        fontSize: "1rem",
+                      }}
+                    >
+                      COMPLETAS
+                    </Button>
+                  </Box>
+
+                  <Typography
+                    variant="h6"
+                    gutterBottom
+                    sx={{
+                      fontWeight: "bold",
+                      mb: 2,
+                      fontSize: "1.1rem",
+                    }}
+                  >
+                    CATEGORÍAS
+                  </Typography>
+
+                  <CategoryManager
+                    categories={categories}
+                    addCategory={addCategory}
+                    deleteCategory={deleteCategory}
+                    sx={{
+                      "& .MuiButton-root": {
+                        fontSize: "1.3rem", // Esto afectará a todos los botones dentro del componente
+                      },
+                      "& .MuiInputBase-input": {
+                        fontSize: "1.3rem", // Esto afectará a todos los inputs dentro del componente
+                      },
+                    }}
+                  />
+                </Paper>
+              </Grid>
+            </Grid>
+
+            {/* CAJA 3: Abajo - Lista de tareas */}
+            <Paper
+              elevation={8}
+              sx={{
+                p: 5,
+                borderRadius: 2,
+                width: "80%",
+                minWidth: "1635px",
+                minHeight: "300px",
+              }}
+            >
+              <Typography
+                variant="h5"
+                gutterBottom
+                sx={{ fontWeight: "bold", mb: 3 }}
+              >
+                MIS TAREAS ({filteredTasks.length})
+              </Typography>
 
               <TaskList
                 tasks={filteredTasks}
                 toggleComplete={toggleComplete}
                 deleteTask={deleteTask}
               />
-            </>
-          )}
-        </Box>
+            </Paper>
+          </>
+        )}
       </Container>
     </ThemeProvider>
   );

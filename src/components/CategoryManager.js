@@ -45,7 +45,11 @@ const CategoryManager = ({ categories, addCategory, deleteCategory }) => {
           <Stack
             direction="row"
             spacing={1}
-            sx={{ flexWrap: "wrap", gap: 1, mb: 2 }}
+            sx={{
+              flexWrap: "wrap",
+              gap: 1,
+              mb: 2,
+            }}
           >
             {categories.map((category) => (
               <Chip
@@ -54,6 +58,9 @@ const CategoryManager = ({ categories, addCategory, deleteCategory }) => {
                 onDelete={() => deleteCategory(category)}
                 color="primary"
                 variant="outlined"
+                sx={{
+                  fontSize: "1.1rem",
+                }}
               />
             ))}
           </Stack>
@@ -66,6 +73,11 @@ const CategoryManager = ({ categories, addCategory, deleteCategory }) => {
               value={newCategory}
               onChange={(e) => setNewCategory(e.target.value)}
               variant="outlined"
+              sx={{
+                "& .MuiInputBase-input": {
+                  fontSize: "1.1rem",
+                },
+              }}
             />
             <Button
               variant="contained"
@@ -73,6 +85,9 @@ const CategoryManager = ({ categories, addCategory, deleteCategory }) => {
               startIcon={<AddIcon />}
               onClick={handleAddCategory}
               disabled={!newCategory.trim()}
+              sx={{
+                fontSize: "1rem",
+              }}
             >
               Añadir
             </Button>
