@@ -30,6 +30,15 @@ El Gestor de Tareas es una aplicación que permite a los usuarios organizar sus 
 
 ![localhost_3000_ (5)](https://github.com/user-attachments/assets/d154f112-0ac9-42db-bde8-7bcffd2fc707)
 
+# Tareas Programadas
+![localhost_3000_ (4)](https://github.com/user-attachments/assets/98599669-cfd5-48be-a528-164773bf9fb3)
 
+# Filtrando nombre de la tarea (BUHO SAC)
+![localhost_3000_ (5)](https://github.com/user-attachments/assets/f6569154-ec6a-4647-a1b3-78fc8b72ff3f)
 
+# Tareas Activas
+![localhost_3000_ (6)](https://github.com/user-attachments/assets/af3bd06e-67da-4b51-b4c1-5ea24fde0398)
+
+# Tareas Completas
+![localhost_3000_ (7)](https://github.com/user-attachments/assets/8463f645-951e-42bf-9ab3-7a51826c0151)
 
