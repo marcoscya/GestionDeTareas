@@ -228,7 +228,8 @@ function App() {
           mt: user ? 4 : 2,
           mb: 4,
           ml: "auto", //Margen izquierdo automático
-          pl: { xs: 2, sm: 4, md: 8, lg: 25 }, // Margen derecho fijo
+          width: "90%",
+          // pl: { xs: 2, sm: 4, md: 8, lg: 25 }, // Margen derecho fijo
         }}
       >
         {!user ? (
@@ -246,22 +247,26 @@ function App() {
           </>
         ) : (
           <>
-            <Grid container spacing={4} sx={{ mb: 1 /* Reducir cajas*/ }}>
+            <Grid
+              container
+              spacing={4}
+              sx={{ mb: 1 /* Reducir cajas*/, justifyContent: "center" }}
+            >
               {/* CAJA 1: Lado derecho - Formulario de tareas */}
               <Grid item xs={12} md={7}>
                 <Paper
                   elevation={8}
                   sx={{
-                    p: 5,
+                    p: 4,
                     borderRadius: 2,
                     height: "95%",
                     width: "100%",
-                    minWidth: "800px",
+                    // minWidth: "800px",
                     minHeight: "600px",
                   }}
                 >
                   <Typography
-                    variant="h5"
+                    variant="h6"
                     gutterBottom
                     sx={{ fontWeight: "bold", mb: 3 }}
                   >
@@ -279,7 +284,7 @@ function App() {
                       mb: 3,
                       borderRadius: 1,
                       "& .MuiOutlinedInput-input": {
-                        fontSize: "1.1rem", // Increase font size of the text
+                        fontSize: "0.8rem", // Increase font size of the text
                       },
                     }}
                   />
@@ -299,7 +304,7 @@ function App() {
                       mb: 3,
                       borderRadius: 1,
                       "& .MuiOutlinedInput-input": {
-                        fontSize: "1.1rem", // Increase font size of the text
+                        fontSize: "0.8rem", // Increase font size of the text
                       },
                     }}
                   />
@@ -317,7 +322,7 @@ function App() {
                       mb: 3,
                       borderRadius: 1,
                       "& .MuiOutlinedInput-input": {
-                        fontSize: "1.2rem", // Aumentar tamaño de fuente del texto
+                        fontSize: "0.8rem", // Aumentar tamaño de fuente del texto
                       },
                     }}
                   />
@@ -355,10 +360,10 @@ function App() {
                         }}
                         sx={{
                           "& .MuiInputBase-input": {
-                            fontSize: "1.1rem", // Aumentar tamaño de fuente del texto seleccionado
+                            fontSize: "0.95rem", // Aumentar tamaño de fuente del texto seleccionado
                           },
                           "& .MuiInputLabel-root": {
-                            fontSize: "1.1rem", // Aumentar tamaño de fuente de la etiqueta
+                            fontSize: "1rem", // Aumentar tamaño de fuente de la etiqueta
                           },
                         }}
                       >
@@ -399,10 +404,10 @@ function App() {
                         }}
                         sx={{
                           "& .MuiInputBase-input": {
-                            fontSize: "1.1rem", // Aumentar tamaño de fuente del texto seleccionado
+                            fontSize: "0.95rem", // Aumentar tamaño de fuente del texto seleccionado
                           },
                           "& .MuiInputLabel-root": {
-                            fontSize: "1.1rem", // Aumentar tamaño de fuente de la etiqueta
+                            fontSize: "1rem", // Aumentar tamaño de fuente de la etiqueta
                           },
                         }}
                       >
@@ -423,7 +428,7 @@ function App() {
                     sx={{
                       py: 1.5,
                       px: 5,
-                      fontSize: "1.1rem",
+                      fontSize: "0.8rem",
                       fontWeight: "bold",
                     }}
                   >
@@ -437,16 +442,16 @@ function App() {
                 <Paper
                   elevation={8}
                   sx={{
-                    p: 5,
+                    p: 4,
                     borderRadius: 2,
                     height: "95%",
                     width: "100%",
                     minHeight: "600px",
-                    minWidth: "800px",
+                    // minWidth: "800px",
                   }}
                 >
                   <Typography
-                    variant="h5"
+                    variant="h6"
                     gutterBottom
                     sx={{
                       fontWeight: "bold",
@@ -473,13 +478,13 @@ function App() {
                       mb: 4,
                       borderRadius: 1,
                       "& .MuiInputBase-input": {
-                        fontSize: "1.1rem",
+                        fontSize: "0.8rem",
                       },
                     }}
                   />
 
                   <Typography
-                    variant="h6"
+                    variant="h7"
                     gutterBottom
                     sx={{ fontWeight: "bold", mb: 2 }}
                   >
@@ -487,7 +492,7 @@ function App() {
                   </Typography>
 
                   <Box
-                    sx={{ mb: 4, p: 2, bgcolor: "#f5f5f5", borderRadius: 2 }}
+                    sx={{ mb: 4, p: 5, bgcolor: "#f5f5f5", borderRadius: 2 }}
                   >
                     <Button
                       fullWidth
@@ -497,7 +502,7 @@ function App() {
                         mb: 2,
                         py: 1.5,
                         fontWeight: "bold",
-                        fontSize: "1rem",
+                        fontSize: "0.95rem",
                       }}
                     >
                       TODAS
@@ -510,7 +515,7 @@ function App() {
                         mb: 2,
                         py: 1.5,
                         fontWeight: "bold",
-                        fontSize: "1rem",
+                        fontSize: "0.95rem",
                       }}
                     >
                       ACTIVAS
@@ -524,7 +529,7 @@ function App() {
                       sx={{
                         py: 1.5,
                         fontWeight: "bold",
-                        fontSize: "1rem",
+                        fontSize: "0.95rem",
                       }}
                     >
                       COMPLETAS
@@ -532,12 +537,12 @@ function App() {
                   </Box>
 
                   <Typography
-                    variant="h6"
+                    variant="h7"
                     gutterBottom
                     sx={{
                       fontWeight: "bold",
                       mb: 2,
-                      fontSize: "1.1rem",
+                      fontSize: "0.99rem",
                     }}
                   >
                     CATEGORÍAS
@@ -549,10 +554,10 @@ function App() {
                     deleteCategory={deleteCategory}
                     sx={{
                       "& .MuiButton-root": {
-                        fontSize: "1.3rem", // Esto afectará a todos los botones dentro del componente
+                        fontSize: "0.8rem", // Esto afectará a todos los botones dentro del componente
                       },
                       "& .MuiInputBase-input": {
-                        fontSize: "1.3rem", // Esto afectará a todos los inputs dentro del componente
+                        fontSize: "0.8rem", // Esto afectará a todos los inputs dentro del componente
                       },
                     }}
                   />
@@ -566,15 +571,16 @@ function App() {
               sx={{
                 p: 5,
                 borderRadius: 2,
-                width: "80%",
-                minWidth: "1635px",
+                width: "90%",
+                // minWidth: "1635px",
                 minHeight: "300px",
+                mx: "auto",
               }}
             >
               <Typography
-                variant="h5"
+                variant="h6"
                 gutterBottom
-                sx={{ fontWeight: "bold", mb: 3 }}
+                sx={{ fontWeight: "bold", mb: 2 }}
               >
                 MIS TAREAS ({filteredTasks.length})
               </Typography>

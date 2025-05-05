@@ -43,7 +43,7 @@ const TaskList = ({ tasks, toggleComplete, deleteTask }) => {
 
   return (
     <Paper elevation={2} sx={{ mt: 2, p: 2 }}>
-      <Typography variant="h5" component="h2" gutterBottom>
+      <Typography variant="h6" component="h2" gutterBottom>
         Mis Tareas ({tasks.length})
       </Typography>
 
